@@ -1,26 +1,49 @@
-import { useState } from 'react'
+import Navbar from './components/Navbar'
+import Hero from './components/Hero'
+import { ContextStrip, Problem, HowItWorks, Features, UseCases, Pricing, WorkflowCTA, FAQ, Footer } from './components/Sections'
+import { ArrowUpRight } from 'lucide-react'
+import { useEffect } from 'react'
 
 function App() {
-  const [count, setCount] = useState(0)
+  useEffect(() => {
+    const links = document.querySelectorAll('a[href^="#"]')
+    const onClick = (e) => {
+      const href = e.currentTarget.getAttribute('href')
+      if (href && href.length > 1) {
+        e.preventDefault()
+        const el = document.querySelector(href)
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    }
+    links.forEach((l) => l.addEventListener('click', onClick))
+    return () => links.forEach((l) => l.removeEventListener('click', onClick))
+  }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white text-slate-900">
+      <Navbar />
+      <Hero />
+      <ContextStrip />
+      <Problem />
+      <HowItWorks />
+      <Features />
+      <UseCases />
+      <Pricing />
+      <WorkflowCTA />
+      <FAQ />
+      <Footer />
+
+      {/* Sticky CTA on small screens */}
+      <a
+        href="#early-access"
+        className="fixed bottom-4 right-4 md:hidden inline-flex items-center gap-2 px-4 py-3 rounded-full shadow-lg bg-emerald-600 text-white hover:bg-emerald-700"
+      >
+        Request Early Access <ArrowUpRight className="h-4 w-4" />
+      </a>
+
+      {/* Anchors for CTAs */}
+      <div id="resources" />
+      <div id="early-access" />
     </div>
   )
 }
